@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Les Stagiaires {% endblock title %}
+
+
+{% block body %}
+<ul>
+    <li>Nom: {{stagiaire.nom}}</li>
+    <li>Prenom: {{stagiaire.prenom}}</li>
+    <li>Sexe: {{stagiaire.sexe}}</li>
+    <li>Date de naissance: {{stagiaire.dateNaissance | date("m/d/Y")}}</li>
+    <li>Ville: {{stagiaire.ville}}</li>
+    <li>Email: {{stagiaire.email}}</li>
+    <li>Numero de telephone: {{stagiaire.telephone}}</li>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategorieController!{% endblock %}
+
+{% block body %}
+
+{% if edit %}
+    <h1>Modifier les info du stagaires {{stagiaire.nom}} {{stagiaire.prenom}}</h1>
+{% else %}
+    <h1>Ajouter un nouvel stagaire</h1>
+{% endif %}
+
+{{form (StagiairesForm)}}
+
+{% endblock %}

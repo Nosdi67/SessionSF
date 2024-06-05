@@ -137,6 +137,15 @@ class Stagiaires
         return $this;
     }
 
+    public function getAge(){
+        if($this->dateNaissance){
+            $age = date_diff($this->dateNaissance, new \DateTime())->format('%y');
+            return $age;
+        }else{
+            return "Pas de date de naissance définie";
+        }
+    }
+
     /**
      * @return Collection<int, Formations>
      */
@@ -162,5 +171,9 @@ class Stagiaires
         }
 
         return $this;
+    }
+
+    public function __toString(){
+        return $this->nom.''. $this->prenom;
     }
 }
