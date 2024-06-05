@@ -51,4 +51,13 @@ class CategorieController extends AbstractController
             
         ]);
     }
+
+    #[Route('/Session/adminPage/categories/{id}/delete', name: 'categorie_delete')]
+    public function delete(Categorie $categorie, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $entityManagerInterface->remove($categorie);
+        $entityManagerInterface->flush();
+        
+        return $this->redirectToRoute('categories');
+    }
 }

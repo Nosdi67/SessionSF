@@ -14,7 +14,8 @@
     This friendly message is coming from:
     <ul>
         {% for categorie in categories %}
-        <li> {{ categorie.nom }} <a href="{{ path('categorie_edit', {'id': categorie.id}) }}">Modifier</a></li>
+        <li> {{ categorie.nom }} <a href="{{ path('categorie_edit', {'id': categorie.id}) }}">Modifier</a>--
+        <a href="{{ path('categorie_delete',{'id': categorie.id}) }}">Supprimer</a></li><br>
         {% endfor %}
     </ul>
 

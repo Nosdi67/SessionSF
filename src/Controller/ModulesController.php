@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Entity\Modules;
 use App\Form\ModulesFormType;
 use App\Repository\ModulesRepository;
+use Symfony\Component\Filesystem\Path;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Renderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Path;
 
 class ModulesController extends AbstractController
 {
@@ -26,9 +26,9 @@ class ModulesController extends AbstractController
     }
 
     
-    #[Route('/Session/adminPage/modules/{id}/edit', name:'modules_edit')]
     #[Route('/Session/adminPage/modules/new', name:'modules_new')]
-    public function new_edit(Modules $module , EntityManagerInterface $entityManagerInterface, Request $request):Response
+    #[Route('/Session/adminPage/modules/{id}/edit', name:'modules_edit')]
+    public function new_edit(Modules $module = null , EntityManagerInterface $entityManagerInterface, Request $request):Response
     {
         if(!$module){
             $module = new Modules();
@@ -44,10 +44,11 @@ class ModulesController extends AbstractController
             return $this->redirectToRoute('modules');
         }
 
-        return $this->render('/modules/new.html.twig',[
+        return $this->render('modules/new.html.twig',[
             'controller_name' => 'ModulesController',
             'module' => $module,
             'edit' => $module->getId(),
+            'moduleForm'=>$form,
         ]);
         
     }
@@ -55,9 +56,19 @@ class ModulesController extends AbstractController
     #[Route('/Session/adminPage/modules/{id}/info', name:'modules_info')]
     public function info_module(Modules $module):Response
     {
-        return $this->render('/modules/info_module.html.twig',[
+        return $this->render('/modules/info.html.twig',[
             'controller_name' => 'ModulesController',
            'module' => $module,
         ]);
+    }
+
+    #[Route('/Session/adminPage/modules/{id}/delete', name:'modules_delete')]
+    public function delete_module(Modules $module, EntityManagerInterface $entityManagerInterface):Response
+
+    {
+        $entityManagerInterface->remove($module);
+        $entityManagerInterface->flush();
+    
+        return $this->redirectToRoute('modules');
     }
 }
