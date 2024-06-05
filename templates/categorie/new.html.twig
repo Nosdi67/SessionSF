@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une categorie {% endblock title %}
+
+
+{% block body %}
+{% if edit %}
+    <p>Modifier une categorie</p>
+{% else %}
+    <p>Ajouter une categoire</p>
+{% endif %}
+<div>
+    {{ form (categorieForm)}}
+</div>
+{% endblock %}
