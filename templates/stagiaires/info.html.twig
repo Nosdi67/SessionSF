@@ -14,4 +14,6 @@
     <li>Numero de telephone: {{stagiaire.telephone}}</li>
 </ul>
 
+<a href="{{ path('stagiaire_delete', {'id': stagiaire.id}) }}">Supprimer {{stagiaire.nom}} {{stagiaire.prenom}} </a>
+<a href="{{ path('admin_home') }}">Page Admin</a>
 {% endblock %}

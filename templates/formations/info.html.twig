@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Les info de la formation {{formation.nom}} {% endblock title %}
+
+{% block body %}
+
+<div>
+    <h2> {{formation.nom}} </h2>
+    <ul>
+        <li> Date {{formation.dateDebut | date('d/m/Y')}} - {{formation.dateFin | date('d/m/Y')}} </li>
+    </ul>
+</div>
+
+<div>
+    <h2>Stagiaires</h2>
+<ul>
+    {% for stagiaire in stagiaires %}
+        <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
+    {% endfor %}
+</ul>
+</div>
+
+{% endblock body %}

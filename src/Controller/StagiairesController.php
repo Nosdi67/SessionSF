@@ -55,4 +55,12 @@ class StagiairesController extends AbstractController
             'stagiaire' => $stagiaire,
         ]);
     }
+
+    #[Route('/stagiaires/{id}/delete', name:'stagiaire_delete')]
+    public function delete(Stagiaires $stagiaire, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $entityManagerInterface->remove($stagiaire);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('stagiaires');
+    }
 }
