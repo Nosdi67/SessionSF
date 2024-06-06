@@ -5,7 +5,7 @@
 {% block body %}
 
 <div>
-    <h2> {{formation.nom}} </h2>
+    <h2> {{formation.nom}} </h2> <a href="{{ path('formation_edit', {'id': formation.id}) }}">Modifier</a>
     <ul>
         <li> Date {{formation.dateDebut | date('d/m/Y')}} - {{formation.dateFin | date('d/m/Y')}} </li>
     </ul>
@@ -19,5 +19,6 @@
     {% endfor %}
 </ul>
 </div>
-
+<a href="{{ path('admin_home') }}">Page admin</a>
+<a href="{{ path('formations') }}">Revenir en arriere</a>
 {% endblock body %}
