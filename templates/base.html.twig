@@ -12,8 +12,18 @@
         {% endblock %}
     </head>
     <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('categories') }}">Categories</a></li>
+                    <li><a href="{{ path('modules') }}">Modules</a></li>
+                    <li><a href="{{ path('stagiaires') }}">Stagiaires</a></li>
+                    <li><a href="{{ path('formations') }}">Formations</a></li>
+                   </ul>
+            </nav>
         
-        {% for message in app.flashes('success') %}
+        </header>
+        {% for message in app.flashes('success','danger') %}
         <div class="flash flash-success">
             {{ message }}
         </div>

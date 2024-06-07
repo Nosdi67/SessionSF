@@ -16,6 +16,28 @@
   {% endfor %}
 
   <a href="{{ path('admin_home') }}">Page Admin</a>
-  <a href="{{ path('modules_new') }}">Creer un nouvel module</a>
+  
+  
 </div>
+  <button id="showForm">Ajouter un module</button>
+
+  <div id="moduleForm">
+    {{ form (moduleForm) }} 
+  </div>
+
+  <script>
+    const showFormButton = document.getElementById('showForm');
+    const moduleForm = document.getElementById('moduleForm');
+    
+    showFormButton.addEventListener('click', function() {
+        if (moduleForm.style.display === 'none') {
+            moduleForm.style.display = 'block';
+            showFormButton.textContent = 'Fermer';
+        } else {
+            moduleForm.style.display = 'none';
+            showFormButton.textContent = 'Afficher le formulaire';
+        }
+    });
+    
+  </script>
 {% endblock %}

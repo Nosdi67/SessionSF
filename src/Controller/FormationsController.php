@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Programme;
 use App\Entity\Formations;
+use App\Entity\Modules;
 use App\Entity\Stagiaires;
 use App\Form\FormationFormType;
 use App\Repository\FormationsRepository;
@@ -29,6 +31,7 @@ class FormationsController extends AbstractController
     public function info( Formations $formation,StagiairesRepository $stagiairesRepository,FormationsRepository $sr): Response
     {
         $nonInscrits=$sr->findNonInscrits($formation->getId());
+        $nonProgrammes=$sr->findProgrammesNonInscrits($formation->getId());
 
 
         $stagiaries=$stagiairesRepository->findAll();
@@ -41,6 +44,7 @@ class FormationsController extends AbstractController
             'programmes' => $programmes,
             'stagiaires' => $stagiaries,
             'nonInscrits' => $nonInscrits,
+            'nonProgrammes' => $nonProgrammes,
 
         ]);
     }
@@ -87,27 +91,64 @@ class FormationsController extends AbstractController
         $this->addFlash('success','Formation supprimée avec succès');
         return $this->redirectToRoute('formations');
     }
-    #[Route('Session/adminPage/formations//info/{id}/addStagiaire', name: 'formation_add_stagiaire')]
-    public function addStagiaire(Formations $formation, EntityManagerInterface $entityManagerInterface, StagiairesRepository $stagiairesRepository): Response
-    {
-        if(isset($_POST['submit'])) {
-            $stagiaires = $stagiairesRepository->findAll();
-            $formationStagiaires = $formation->getStagiaires();
-        
-            foreach ($stagiaires as $stagiaire) {
-                if (!$formationStagiaires->contains($stagiaire)) {
-                    $formation->addStagiaire($stagiaire);
-                } else {
-                    $formation->removeStagiaire($stagiaire);
-                }
-            }
-       
-        }
+   
     
+    
+    #[Route('Session/adminPage/formations/info/addStagiaire/{formation}/{stagiaire}', name: 'formation_add_stagiaire')]
+    public function addStagiaire(Formations $formation, Stagiaires $stagiaire, EntityManagerInterface $entityManagerInterface): Response
+    {
+        if(count($formation->getStagiaires()) >= $formation->getNbPlace()){//si le nombre de stagiaire dépasse le nombre de place
+         
+            $this->addFlash('danger','Impossible d\'ajouter ce stagiaire, la formation est pleine');
+            return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
+        }else{
+        
+            $formation->addStagiaire($stagiaire);//on l'ajoute à la formation
+            $entityManagerInterface->persist($formation);
+            $entityManagerInterface->flush();
+            $this->addFlash('success','Stagiaire ajouté avec succès');
+            return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
+        }
+    }
+    #[Route('Session/adminPage/formations/info/removeStagiaire/{formation}/{stagiaire}', name: 'formation_remove_stagiaire')]
+    public function removeStagiaire(Formations $formation, Stagiaires $stagiaire,EntityManagerInterface $entityManagerInterface ): Response
+    {
+        $formation->removeStagiaire($stagiaire);
         $entityManagerInterface->persist($formation);
         $entityManagerInterface->flush();
-    
-        return $this->redirectToRoute('formation_edit', ['id' => $formation->getId()]);
+        $this->addFlash('success','Stagiaire supprimé avec succès');
+        return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
     }
-    
+
+    #[Route('Session/adminPage/formations/info/addProgramme/{formation}/{module}', name: 'formation_add_programme')]
+    public function addProgramme(Formations $formation, Modules $module, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $nbJour=filter_input(INPUT_POST, 'nbJours', FILTER_SANITIZE_NUMBER_INT);
+
+        if($nbJour == null){
+            $this->addFlash('danger','Veuillez renseigner le nombre de jour');
+            return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
+        }
+
+        $programme = new Programme();
+        $programme->setNbJour($nbJour);
+        $programme->setFormation($formation);
+        $programme->setModule($module);
+
+        $formation->addProgramme($programme);
+        $entityManagerInterface->persist($formation);
+        $entityManagerInterface->flush();
+        $this->addFlash('success','Programme ajouté avec succès');
+        return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
+    }
+
+    #[Route('/Session/adminPage/formations/info/removeProgramme/{formation}/{programme}', name: 'formation_remove_programme')]
+    public function removeProgramme(Formations $formation, Programme $programme, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $formation->removeProgramme($programme);
+        $entityManagerInterface->persist($formation);
+        $entityManagerInterface->flush();
+        $this->addFlash('success','Programme supprimé avec succès');
+        return $this->redirectToRoute('formation_info', ['id' => $formation->getId(),]);
+    }
 }

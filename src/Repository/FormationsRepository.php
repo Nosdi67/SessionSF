@@ -39,6 +39,36 @@ class FormationsRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findProgrammesNonInscrits($formation_id){
+        
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+    
+       
+        $qd = $sub;
+        
+        $qd->select('m')
+            ->from('App\Entity\Modules','m')
+            ->LeftJoin('m.programmes', 'pr')
+            ->where('pr.formation = :id');
+    
+        $sub = $em->createQueryBuilder();
+    
+       
+        $sub->select('mo')
+            ->from('App\Entity\Modules', 'mo')
+            ->where($sub->expr()->notIn('mo.id', $qd->getDQL()))
+            ->setParameter('id', $formation_id)
+            ->orderBy('mo.nom');
+    
+        $query = $sub->getQuery();
+        return $query->getResult();
+    }
+    
+
+
+}
+
     //    /**
     //     * @return Formations[] Returns an array of Formations objects
     //     */
@@ -63,4 +93,4 @@ class FormationsRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}
+

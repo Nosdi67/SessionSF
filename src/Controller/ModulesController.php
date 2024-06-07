@@ -16,17 +16,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ModulesController extends AbstractController
 {
     #[Route('/Session/adminPage/modules', name: 'modules')]
-    public function index(ModulesRepository $modulesRepository): Response
+    #[Route('/Session/adminPage/modules/new', name:'modules_new')]
+    public function index(ModulesRepository $modulesRepository, Request $request,EntityManagerInterface $entityManagerInterface): Response
     {
+        $form=$this->createForm(ModulesFormType::class);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $module=$form->getData();
+            $entityManagerInterface->persist($module);
+            $entityManagerInterface->flush();
+            
+            return $this->redirectToRoute('modules');
+        }
+        
         $modules= $modulesRepository->findAll();
         return $this->render('modules/index.html.twig', [
             'controller_name' => 'ModulesController',
             'modules' => $modules,
+            'moduleForm' => $form
+
         ]);
     }
-
     
-    #[Route('/Session/adminPage/modules/new', name:'modules_new')]
+    
+    
     #[Route('/Session/adminPage/modules/{id}/edit', name:'modules_edit')]
     public function new_edit(Modules $module = null , EntityManagerInterface $entityManagerInterface, Request $request):Response
     {
@@ -40,7 +54,7 @@ class ModulesController extends AbstractController
             $module=$form->getData();
             $entityManagerInterface->persist($module);
             $entityManagerInterface->flush();
-
+            
             return $this->redirectToRoute('modules');
         }
 
@@ -50,7 +64,7 @@ class ModulesController extends AbstractController
             'edit' => $module->getId(),
             'moduleForm'=>$form,
         ]);
-        
+        $this->redirectToRoute('modules');
     }
 
     #[Route('/Session/adminPage/modules/{id}/info', name:'modules_info')]

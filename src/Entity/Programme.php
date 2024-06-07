@@ -65,7 +65,8 @@ class Programme
     }
 
     public function __toString(){
-        return $this->module->getNom()." - ". $this->getNbJour(). ' jours ';
+        $term = ($this->getNbJour() == 1) ? ' jour' : ' jours';
+        return $this->module->getNom()." - ". $this->getNbJour().$term;
     }
 
 }

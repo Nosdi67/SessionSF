@@ -11,12 +11,12 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    {% for formation in formations %}
     <ul>
+    {% for formation in formations %}
         <li> {{formation.nom}} - <a href="{{ path('formation_info', {'id': formation.id})}}">Info</a> </li>
+        {% endfor %}
     </ul>
-</div>
-{% endfor %}
+    </div>
 
 <a href="{{ path('admin_home') }}">Page Admin</a>
 <a href="{{ path('formation_new')}}">Ajouter une Formtaion</a>

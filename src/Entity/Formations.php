@@ -37,7 +37,7 @@ class Formations
     /**
      * @var Collection<int, Programme>
      */
-    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'formation')]
+    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'formation', cascade:["persist"])]
     private Collection $programmes;
 
     public function __construct()
@@ -151,5 +151,9 @@ class Formations
         }
 
         return $this;
+    }
+
+    public function countStagiaires(): int{
+        return $this->stagiaires->count();
     }
 }
