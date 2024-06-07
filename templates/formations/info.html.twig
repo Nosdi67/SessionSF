@@ -4,21 +4,37 @@
 
 {% block body %}
 
+
+
 <div>
-    <h2> {{formation.nom}} </h2> <a href="{{ path('formation_edit', {'id': formation.id}) }}">Modifier</a>
+    <h2> {{formation.nom}} </h2> <a href="{{ path('formation_edit', {'id': formation.id}) }}">Modifier</a> - <a href="{{ path('formation_delete', {'id': formation.id}) }}">Supprimer</a>
     <ul>
         <li> Date {{formation.dateDebut | date('d/m/Y')}} - {{formation.dateFin | date('d/m/Y')}} </li>
+        {% for programme in formation.programmes %}
+        <li>Modules :{{ programme }}</li><br>
+        {% endfor %}     
     </ul>
 </div>
 
 <div>
-    <h2>Stagiaires</h2>
-<ul>
-    {% for stagiaire in stagiaires %}
-        <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
+    <h2>Stagiaires</h2> <button id="addStagiaire">Ajouter un stagiaire</button>
+    {% for FormationStagiaire in FormationStagiaires %}
+    <ul>
+        <li>{{ FormationStagiaire.nom }} {{ FormationStagiaire.prenom }}</li>
+    </ul>
     {% endfor %}
-</ul>
+
+    <form action="{{ path('formation_add_stagiaire', {'id': formation.id}) }}" method="post" display="none" id="formAddStagiaire">
+        {% for stagiaire in stagiaires %}
+            <input type="hidden" name="id" value="{{ stagiaire.id }}">
+            <input type="checkbox" name="stagiaires" value="{{ stagiaire.id }}" 
+            {% if stagiaire.formation is defined %} checked {% endif %}> {{ stagiaire.nom }} {{ stagiaire.prenom }}<br>
+            {% endfor %}
+        </form>
+        <button name="submit" id="submit">Ajouter</button>
 </div>
 <a href="{{ path('admin_home') }}">Page admin</a>
 <a href="{{ path('formations') }}">Revenir en arriere</a>
+
+
 {% endblock body %}
