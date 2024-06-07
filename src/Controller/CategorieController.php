@@ -60,4 +60,15 @@ class CategorieController extends AbstractController
         
         return $this->redirectToRoute('categories');
     }
+    #[Route('Session/adminPage/categories/{id}/{nom}', name: 'categorie_show_modules')]
+    public function all(Categorie $categorie,EntityManagerInterface $entityManagerInterface): Response
+    {
+
+        $modules=$categorie->getModules();
+        return $this->render('categorie/show_modules.html.twig', [
+            'controller_name' => 'CategorieController',
+           'modules' => $modules,
+           'categorie' => $categorie,
+        ]);
+    }
 }

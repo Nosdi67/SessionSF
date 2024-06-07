@@ -17,8 +17,11 @@ class ModulesController extends AbstractController
 {
     #[Route('/Session/adminPage/modules', name: 'modules')]
     #[Route('/Session/adminPage/modules/new', name:'modules_new')]
-    public function index(ModulesRepository $modulesRepository, Request $request,EntityManagerInterface $entityManagerInterface): Response
+    public function index(ModulesRepository $modulesRepository,Modules $module = null, Request $request,EntityManagerInterface $entityManagerInterface): Response
     {
+        if(!$module){
+            $module = new Modules();
+        }
         $form=$this->createForm(ModulesFormType::class);
         $form->handleRequest($request);
         
