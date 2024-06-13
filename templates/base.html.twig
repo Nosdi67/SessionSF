@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css" integrity="sha512-OQDNdI5rpnZ0BRhhJc+btbbtnxaj+LdQFeh0V9/igiEPDiWE2fG+ZsXl0JEH+bjXKPJ3zcXqNyP4/F/NegVdZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="{{ asset('style.css') }}">
         {% block stylesheets %}
         {% endblock %}
 
@@ -14,12 +16,18 @@
     <body>
         <header>
             <nav>
-                <ul>
-                    <li><a href="{{ path('categories') }}">Categories</a></li>
-                    <li><a href="{{ path('modules') }}">Modules</a></li>
-                    <li><a href="{{ path('stagiaires') }}">Stagiaires</a></li>
-                    <li><a href="{{ path('formations') }}">Formations</a></li>
-                   </ul>
+                <div class="nav-right">
+                    
+                </div> 
+                <div class="nav-left">
+                    <ul>
+                        <li><a href="{{ path('categories') }}">Categories</a></li>
+                        <li><a href="{{ path('modules') }}">Modules</a></li>
+                        <li><a href="{{ path('stagiaires') }}">Stagiaires</a></li>
+                        <li><a href="{{ path('formations') }}">Formations</a></li>
+                        <li><a href="{{ path('api') }}">Users</a></li>
+                    </ul>
+                </div>
             </nav>
         
         </header>

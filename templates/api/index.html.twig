@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+
+
+<div class="users">
+    {% for user in users.results %}
+        <div class="user">
+            
+            <div class="top">
+                <div>
+                    <h2>{{user.name.title}} {{user.name.last}} {{user.name.first}}</h2>
+                    <p class="txt-light"><i class="ri-main-line"></i>&nbsp; {{user.email}}</p>
+                    <p class="txt-light"><i class="ri-smartphone-line" ></i>&nbsp; {{user.phone}}</p>
+                </div>
+            </div>
+            
+            <div>
+                <img src="{{  user.picture.large  }}" alt="Photo de l'utilisateur {{user.name.last}} {{user.name.first}}">
+            </div>
+
+            <div class="details">
+                <div>
+                    <i class="ri-map-pin-2-line"></i>&nbsp; {{user.location.street.number}} {{ user.location.street.name }} <br>
+                    <p> {{user.location.postcode}}  {{user.location.city}}</p>
+                    <p> {{user.location.country}}</p>
+                </div>
+
+                <div>
+                    <p class="plus"><a href=""><i class="ri-folder-add-line"></i></a></p>
+                </div>
+            </div>  
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
