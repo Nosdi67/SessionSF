@@ -67,3 +67,6 @@ main{
     color: red;
     font-size: 1.4rem;
 }
+button{
+    cursor: pointer;
+}

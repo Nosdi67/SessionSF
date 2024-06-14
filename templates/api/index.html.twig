@@ -31,7 +31,28 @@
                 <div>
                     <p class="plus"><a href=""><i class="ri-folder-add-line"></i></a></p>
                 </div>
-            </div>  
+            </div>
+            
+            <div class="data">
+                <form action="{{ path('membre_add') }}" method="post">
+                    <input type="hidden" name="title" value="{{user.name.title}}">
+                    <input type="hidden" name="last" value="{{user.name.last}}">
+                    <input type="hidden" name="first" value="{{user.name.first}}">
+                    <input type="hidden" name="email" value="{{user.email}}">
+                    <input type="hidden" name="phone" value="{{user.phone}}">
+                    <input type="hidden" name="picture" value="{{user.picture.large}}">
+                    <input type="hidden" name="streetnumber" value="{{user.location.street.number}}">
+                    <input type="hidden" name="streetname" value="{{user.location.street.name}}">
+                    <input type="hidden" name="postcode" value="{{user.location.postcode}}">
+                    <input type="hidden" name="city" value="{{user.location.city}}">
+                    <input type="hidden" name="country" value="{{user.location.country}}">
+                    <input type="hidden" name="uuid" value="{{user.login.uuid}}">
+                    <button type="submit">
+                        <i class="ri-folder-add-line plus"></i>
+                    </button>
+                </form>
+            </div>
+
         </div>
     {% endfor %}
 </div>
